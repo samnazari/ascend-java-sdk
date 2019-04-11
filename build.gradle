@@ -1,0 +1,104 @@
+plugins {
+    id 'java'
+    id 'maven'
+    id 'signing'
+}
+
+group = "ai.evolv"
+archivesBaseName = "ascend-sdk"
+version = "0.5.0"
+
+sourceCompatibility = 1.8
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+ext.libraries = [:]
+
+libraries.required = [
+        'com.google.code.gson:gson:2.8.5',
+        'org.slf4j:slf4j-api:1.7.26'
+]
+
+libraries.optional = [
+        'com.squareup.okhttp3:okhttp:3.14.0',
+        'org.asynchttpclient:async-http-client:2.0.38'
+]
+
+libraries.test = [
+        'log4j:log4j:1.2.17',
+        'org.apache.logging.log4j:log4j-slf4j-impl:2.11.2',
+        'org.mockito:mockito-core:2.1.0',
+        'junit:junit:4.12'
+]
+
+dependencies {
+    implementation libraries.required, libraries.optional, libraries.test
+    testImplementation libraries.test
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'Ascend SDK'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'SDK to interact with the Ascend product.'
+                url 'https://www.evolv.ai/ascend/'
+
+                scm {
+                    connection 'scm:git:git://github.com/evolv-ai/ascend-java-sdk.git'
+                    developerConnection 'scm:git:ssh:git@github.com:evolv-ai/ascend-java-sdk.git'
+                    url 'https://github.com/evolv-ai/ascend-java-sdk'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'frazerbayley'
+                        name 'Frazer Bayley'
+                        email 'frazer.bayley@evolv.ai'
+                    }
+                }
+            }
+        }
+    }
+}
