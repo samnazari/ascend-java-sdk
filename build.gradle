@@ -6,7 +6,7 @@ plugins {
 
 group = "ai.evolv"
 archivesBaseName = "ascend-sdk"
-version = "0.5.0"
+version = "0.5.1"
 
 sourceCompatibility = 1.8
 
@@ -15,28 +15,17 @@ repositories {
     mavenCentral()
 }
 
-ext.libraries = [:]
-
-libraries.required = [
-        'com.google.code.gson:gson:2.8.5',
-        'org.slf4j:slf4j-api:1.7.26'
-]
-
-libraries.optional = [
-        'com.squareup.okhttp3:okhttp:3.14.0',
-        'org.asynchttpclient:async-http-client:2.0.38'
-]
-
-libraries.test = [
-        'log4j:log4j:1.2.17',
-        'org.apache.logging.log4j:log4j-slf4j-impl:2.11.2',
-        'org.mockito:mockito-core:2.1.0',
-        'junit:junit:4.12'
-]
-
 dependencies {
-    implementation libraries.required, libraries.optional, libraries.test
-    testImplementation libraries.test
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'org.slf4j:slf4j-api:1.7.26'
+
+    compileOnly 'com.squareup.okhttp3:okhttp:3.14.0'
+    compileOnly 'org.asynchttpclient:async-http-client:2.0.38'
+
+    testImplementation 'log4j:log4j:1.2.17'
+    testImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.11.2'
+    testImplementation 'org.mockito:mockito-core:2.1.0'
+    testImplementation 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {

@@ -5,13 +5,29 @@
    **Participant:** The end user of the application, the individual who's actions are being recorded in the experiment.
    **Allocation:** The set of configurations that have been given to the participant, the values that are being
    experimented against.
+   
+   
+### Import the SDK
+
+1. Import the Ascend SDK.
+
+    ```xml
+        <dependency>
+          <groupId>ai.evolv</groupId>
+          <artifactId>ascend-sdk</artifactId>
+          <version>0.5.1</version>
+        </dependency>
+    ```
 
 ### Client Initialization
 
 1. Build an AscendConfig instance.
     ```java
-       AscendConfig config = AscendConfig.builder(<environment_id>).build();
+       AscendConfig config = AscendConfig.builder(<environment_id>, <http_client>).build();
     ```
+    
+    *Note: The SDK uses a standard interface for the http backend see [HttpClient.](https://github.com/evolv-ai/ascend-java-sdk/blob/master/src/main/java/ai/evolv/HttpClient.java). 
+    When configuring the client you must specify what implementation of HttpClient to use (or implement your own).*
 
 2. Initialize the AscendClient.
     ```java
@@ -90,10 +106,10 @@ custom allocation store to the client when you build the AscendConfig.
 
 1. Supply the allocation store to the client.
     ```java
-       AscendConfig config = AscendConfig.Builder(<environment_id>)
+       AscendConfig config = AscendConfig.builder(<environment_id>, <http_client>)
            .setAscendAllocationStore(<custom_store>)
            .build();
-       AscendClient client = AscendClient.init(config);
+       AscendClient client = AscendClientFactory.init(config);
    ```
    
 ### Optional Configurations
