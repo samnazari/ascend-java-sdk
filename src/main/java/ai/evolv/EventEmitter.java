@@ -3,10 +3,12 @@ package ai.evolv;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import java.net.URI;
+import java.net.URL;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.*;
 
 class EventEmitter {
 
@@ -62,12 +64,15 @@ class EventEmitter {
 
     String getEventUrl(String type, Double score) {
         try {
-            String path = String.format("//%s/%s/%s/events", config.getDomain(), config.getVersion(),
+            String path = String.format("//%s/%s/%s/events", config.getDomain(),
+                    config.getVersion(),
                     config.getEnvironmentId());
-            String queryString = String.format("uid=%s&sid=%s&type=%s&score=%s", ascendParticipant.getUserId(),
+            String queryString = String.format("uid=%s&sid=%s&type=%s&score=%s",
+                    ascendParticipant.getUserId(),
                     ascendParticipant.getSessionId(), type, score.toString());
 
-            URI uri = new URI(config.getHttpScheme(), null, path, queryString, null);
+            URI uri = new URI(config.getHttpScheme(), null, path, queryString,
+                    null);
 
             URL url = uri.toURL();
 
@@ -80,12 +85,15 @@ class EventEmitter {
 
     String getEventUrl(String type, String experimentId, String candidateId) {
         try {
-            String path = String.format("//%s/%s/%s/events", config.getDomain(), config.getVersion(),
+            String path = String.format("//%s/%s/%s/events", config.getDomain(),
+                    config.getVersion(),
                     config.getEnvironmentId());
-            String queryString = String.format("uid=%s&sid=%s&eid=%s&cid=%s&type=%s", ascendParticipant.getUserId(),
+            String queryString = String.format("uid=%s&sid=%s&eid=%s&cid=%s&type=%s",
+                    ascendParticipant.getUserId(),
                     ascendParticipant.getSessionId(), experimentId, candidateId, type);
 
-            URI uri = new URI(config.getHttpScheme(), null, path, queryString, null);
+            URI uri = new URI(config.getHttpScheme(), null, path, queryString,
+                    null);
 
             URL url = uri.toURL();
 

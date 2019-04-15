@@ -5,8 +5,10 @@ public class AscendConfig {
     static final String DEFAULT_HTTP_SCHEME = "https";
     static final String DEFAULT_DOMAIN = "participants.evolv.ai";
     static final String DEFAULT_API_VERSION = "v1";
-    static final AscendAllocationStore DEFAULT_ALLOCATION_STORE = new DefaultAscendAllocationStore();
-    static final AscendParticipant DEFAULT_ASCEND_PARTICIPANT = new AscendParticipant.Builder().build();
+    static final AscendAllocationStore DEFAULT_ALLOCATION_STORE =
+            new DefaultAscendAllocationStore();
+    static final AscendParticipant DEFAULT_ASCEND_PARTICIPANT =
+            new AscendParticipant.Builder().build();
 
     private final String httpScheme;
     private final String domain;
@@ -17,8 +19,10 @@ public class AscendConfig {
     private final HttpClient httpClient;
     private final ExecutionQueue executionQueue;
 
-    private AscendConfig(String httpScheme, String domain, String version, String environmentId,
-                         AscendAllocationStore ascendAllocationStore, AscendParticipant ascendParticipant,
+    private AscendConfig(String httpScheme, String domain, String version,
+                         String environmentId,
+                         AscendAllocationStore ascendAllocationStore,
+                         AscendParticipant ascendParticipant,
                          HttpClient httpClient) {
         this.httpScheme = httpScheme;
         this.domain = domain;
@@ -111,7 +115,8 @@ public class AscendConfig {
         }
 
         /**
-         * Sets up a custom AscendAllocationStore. Store needs to implement the AscendAllocationStore interface.
+         * Sets up a custom AscendAllocationStore. Store needs to implement the
+         * AscendAllocationStore interface.
          * @param ascendAllocationStore a custom built allocation store
          * @return AscendClientBuilder class
          */

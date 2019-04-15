@@ -5,11 +5,12 @@ import ai.evolv.exceptions.AscendRuntimeException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 
+import java.net.URI;
+import java.net.URL;
+import java.util.concurrent.CompletableFuture;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.*;
-import java.util.concurrent.CompletableFuture;
 
 
 class Allocator {
@@ -57,7 +58,8 @@ class Allocator {
 
     String createAllocationsUrl() {
         try {
-            String path = String.format("//%s/%s/%s/allocations", config.getDomain(), config.getVersion(),
+            String path = String.format("//%s/%s/%s/allocations", config.getDomain(),
+                    config.getVersion(),
                     config.getEnvironmentId());
             String queryString = String.format("uid=%s&sid=%s", ascendParticipant.getUserId(),
                     ascendParticipant.getSessionId());
@@ -97,7 +99,7 @@ class Allocator {
             // could throw an exception due to customer's action logic
             try {
                 executionQueue.executeAllWithValuesFromAllocations(allocations);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 throw new AscendRuntimeException(e);
             }
 
@@ -107,7 +109,7 @@ class Allocator {
                 // surface any customer implementation errors
                 logger.error(ex.getCause().getCause().toString());
                 return result;
-            } else if (ex != null && result == null ){
+            } else if (ex != null && result == null) {
                 return resolveAllocationFailure();
             } else {
                 return result;

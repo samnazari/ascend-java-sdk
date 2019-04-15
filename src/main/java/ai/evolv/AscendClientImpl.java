@@ -1,14 +1,14 @@
 package ai.evolv;
 
-import com.google.gson.JsonArray;
+import ai.evolv.exceptions.AscendKeyError;
+import ai.evolv.generics.GenericClass;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.gson.JsonArray;
 
 import java.util.concurrent.CompletableFuture;
 
-import ai.evolv.exceptions.AscendKeyError;
-import ai.evolv.generics.GenericClass;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class AscendClientImpl implements AscendClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(AscendClientImpl.class);
@@ -47,7 +47,8 @@ class AscendClientImpl implements AscendClient {
             GenericClass<T> cls = new GenericClass(defaultValue.getClass());
             return new Allocations(allocations).getValueFromGenome(key, cls.getMyType());
         } catch (Exception e) {
-            LOGGER.error("There was as error retrieving the requested value. Returning the default.", e);
+            LOGGER.error("There was as error retrieving the requested value. Returning " +
+                    "the default.", e);
             return defaultValue;
         }
     }
@@ -70,7 +71,7 @@ class AscendClientImpl implements AscendClient {
         if (allocationStatus == Allocator.AllocationStatus.FETCHING) {
             executionQueue.enqueue(execution);
             return;
-        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED){
+        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED) {
             try {
                 JsonArray allocations = store.get();
                 execution.executeWithAllocation(allocations);
@@ -99,7 +100,7 @@ class AscendClientImpl implements AscendClient {
         Allocator.AllocationStatus allocationStatus = allocator.getAllocationStatus();
         if (allocationStatus == Allocator.AllocationStatus.FETCHING) {
             allocator.sandBagConfirmation();
-        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED){
+        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED) {
             eventEmitter.confirm(store.get());
         }
     }
@@ -109,7 +110,7 @@ class AscendClientImpl implements AscendClient {
         Allocator.AllocationStatus allocationStatus = allocator.getAllocationStatus();
         if (allocationStatus == Allocator.AllocationStatus.FETCHING) {
             allocator.sandBagContamination();
-        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED){
+        } else if (allocationStatus == Allocator.AllocationStatus.RETRIEVED) {
             eventEmitter.contaminate(store.get());
         }
     }
