@@ -27,7 +27,7 @@
     ```
     
     *Note: The SDK uses a standard interface for the http backend see [HttpClient.](https://github.com/evolv-ai/ascend-java-sdk/blob/master/src/main/java/ai/evolv/HttpClient.java). 
-    When configuring the client you must specify what implementation of HttpClient to use (or implement your own).*
+    When configuring the client you must specify what implementation of HttpClient to use (or implement your own). See "Custom Http Backend" for more details.*
 
 2. Initialize the AscendClient.
     ```java
@@ -70,12 +70,12 @@ subscribe to a value and apply any actions as a result of it asynchronously.
     requested value, the default value will be returned in its place. If you have a previous allocation stored the 
     value will be retrieved and then your code will be executed. When the new allocation is retrieved if the value
     differs from the previously stored allocation then your code will be ran again with the new value. If your code 
-    results in an Exception it will be thrown.*
+    results in an Exception it will be logged but no runtime exception is thrown.*
     
 ### Custom Events (optional)
 
 Sometimes you may want to record certain events that occurred during the participant's session. An example of an event
-thats important to record is a "conversion" event. If you implemented the SDK in a shopping app, you could send the
+that is important to record is a "conversion" event. If you implemented the SDK in a shopping app, you could send the
 "conversion" event when the participant presses the checkout button.
 
 1. Emit a custom event.
@@ -98,6 +98,23 @@ Sometimes it may be necessary to contaminate the participant's allocation. Meani
     ```java
        client.contaminate();
     ```    
+    
+
+### Custom Http Backend    
+
+The Ascend Client uses a standard Http interface for making Http requests to the Participant API, see [HttpClient.](https://github.com/evolv-ai/ascend-java-sdk/blob/master/src/main/java/ai/evolv/HttpClient.java)
+We have built a couple of implementations that are available out of the box, you can also feel free to create your own. At initialization you will need to pass in the HttpClient that you want to use to the 
+AscendConfig class.
+
+1. Choose an HttpClient and pass it to the AscendConfig.
+
+    ```java
+       HttpClient httpClient = new AsyncHttpClientImpl(<request_timeout>);
+       AscendConfig config = AscendConfig.builder(<environment_id>, httpClient).build();
+       AscendClient client = AscendClientFactory.init(config);
+    ```
+    *Note: The above HttpClient implementation uses org.asynchttpclient:async-http-client as its http client. In order to use
+    the implementation you will need to bring the package into your dependencies.*
     
 ### Custom Allocation Store (optional)
 
