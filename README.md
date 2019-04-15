@@ -113,6 +113,8 @@ AscendConfig class.
        AscendConfig config = AscendConfig.builder(<environment_id>, httpClient).build();
        AscendClient client = AscendClientFactory.init(config);
     ```
+    *Note: The above HttpClient implementation uses org.asynchttpclient:async-http-client as its http client. In order to use
+    the implementation you will need to bring the package into your dependencies.*
     
 ### Custom Allocation Store (optional)
 
